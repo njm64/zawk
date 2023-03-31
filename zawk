@@ -1,0 +1,8 @@
+#!/bin/sh
+export LC_ALL=C
+awk \
+    -f util.awk \
+    -f mem.awk \
+    -f hdr.awk \
+    -f z.awk \
+    $*
