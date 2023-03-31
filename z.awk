@@ -1,5 +1,5 @@
 END {
-    hdr_decode()
+    hdr_init()
     hdr_print()
 }
 
