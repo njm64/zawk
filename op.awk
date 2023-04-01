@@ -7,8 +7,10 @@
 # op_arg:  Array    operands values   
 #
 
-OP
-A0,A1,A2,A3
+# Might rename op_code and op_arg to:
+# - OP
+# - A0,A1,A2,A3
+# With -1 for args that are not populated
 
 function op_decode(    b, t) {
     op_pc = cpu_pc
