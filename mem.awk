@@ -7,7 +7,7 @@ function mem_init() {
     RS="$a"
 }
 
-function mem_load_chunk( i) {
+function mem_load_chunk(    i) {
     for(i = 1; i <= NF; i++) {
         mem[mem_size++] = ord[$i]
     }
@@ -17,7 +17,7 @@ function mem_load_chunk( i) {
     mem[mem_size++] = 0 
 }
 
-function mem_dump( i) {
+function mem_dump(    i) {
     for(i = 0; i < mem_size; i++) {
         printf("%02X\n", mem[i])
     }
@@ -27,8 +27,17 @@ function mem_read_u8(addr) {
     return mem[addr]
 }
 
+function mem_write_u8(addr, val) {
+    mem[addr] = val
+}
+
 function mem_read_u16(addr) {
     return mem[addr] * 256 + mem[addr+1]
+}
+
+function mem_write_u16(addr, val) {
+    mem[addr] = int(addr / 256)
+    mem[addr+1] = addr % 256
 }
 
 BEGIN { mem_init() }
