@@ -55,12 +55,13 @@ function cpu_get_var(i) {
 }
 
 function cpu_set_var(i, val) {
+    val = to_u16(val)
     if(i == 0) {
-        cpu_stack_push(to_u16(val))
+        cpu_stack_push(val)
     } else if(i < 16) {
-        cpu_set_local(i - 1, to_u16(val))
+        cpu_set_local(i - 1, val)
     } else if(i < 256) {
-        cpu_set_global(i - 16, to_u16(val))
+        cpu_set_global(i - 16, val)
     }
 }
 
@@ -71,9 +72,35 @@ function cpu_ret(val) {
     cpu_set_var(cpu_stack_pop(), val)
 }
 
-function cpu_branch(condition) {
-    printf("branch %d\n", condition)
-    # TODO
+function cpu_branch(condition,    b, offset) {
+    b = cpu_fetch_u8()
+
+    # If bit 7 is clear, we invert the condition
+    if(!test_bit(b, 7)) {
+        condition = !condition
+    }
+
+    # Offset is normally an unsigned 6 bit number
+    offset = b % 64
+
+    # If bit 6 is set, fetch another byte. The offset becomes
+    # a signed 14 bit number.
+    if(test_bit(b, 6) == 0) {
+        offset = (b % 64) * 256 + cpu_fetch_u8()
+        if(offset >= 8192) {
+            offset -= 16384
+        }
+    }
+
+    if(condition) {
+        if(offset == 0) {
+            cpu_ret(0)
+        } else if(offset == 1) {
+            cpu_ret(1)
+        } else {
+            cpu_pc = cpu_pc + offset - 2
+        }
+    }
 }
 
 

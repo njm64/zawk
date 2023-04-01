@@ -5,7 +5,7 @@ END {
     hdr_print()
     cpu_init()
 
-    for(i = 0; i < 6; i++) {
+    while(!cpu_break) {
         op_decode()
         op_dispatch()
     }

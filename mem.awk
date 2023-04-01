@@ -36,8 +36,8 @@ function mem_read_u16(addr) {
 }
 
 function mem_write_u16(addr, val) {
-    mem[addr] = int(addr / 256)
-    mem[addr+1] = addr % 256
+    mem[addr] = int(val / 256)
+    mem[addr+1] = val % 256
 }
 
 BEGIN { mem_init() }
