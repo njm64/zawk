@@ -76,7 +76,7 @@ function op_dispatch() {
     }
 }
 
-function op_unknown(arity,    i) {
+function op_unknown(    i) {
     printf("Unknown opcode: ")
     op_print()
 }
@@ -101,7 +101,10 @@ function op_dispatch_1op() {
 }
 
 function op_dispatch_2op() {
-    if(op_code == 20) {
+    if(op_code == 1) {
+        op_je()
+    } else if(op_code == 20) { # add
+        cpu_set_var(cpu_fetch_u8(), op_arg[0] + op_arg[1])
     } else {
         op_unknown()
     }
@@ -121,7 +124,7 @@ function op_call(   ret_var, routine, num_locals, i, local) {
     ret_var = cpu_fetch_u8()
     routine = op_arg[0]
     if(routine == 0) {
-        var_set(ret_var, 0)
+        cpu_set_var(ret_var, 0)
     } else {
         cpu_stack_push(ret_var)
         cpu_stack_push(cpu_pc)
@@ -134,5 +137,15 @@ function op_call(   ret_var, routine, num_locals, i, local) {
             cpu_stack_push(i + 1 < op_argc ? op_arg[i + 1] : local)
         }
     }
+}
+
+function op_je(    i) {
+    for(i = 1; i < op_argc; i++) {
+        if(op_args[0] == op_args[i]) {
+            cpu_branch(1)
+            return
+        }
+    }
+    cpu_branch(0)
 }
 

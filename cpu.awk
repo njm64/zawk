@@ -71,3 +71,9 @@ function cpu_ret(val) {
     cpu_set_var(cpu_stack_pop(), val)
 }
 
+function cpu_branch(condition) {
+    printf("branch %d\n", condition)
+    # TODO
+}
+
+

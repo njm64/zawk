@@ -27,7 +27,7 @@ function to_s16(val) {
 }
 
 function to_u16(val) {
-    return val < 0 ? val + 65536 : val
+    return val < 0 ? val + 65536 : val % 65536
 }
 
 function test_input() {
