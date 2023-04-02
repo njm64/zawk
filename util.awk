@@ -10,7 +10,7 @@ function ord_init(    i, c) {
 }
 
 function logand(a, b,    c, m) {
-    for(m = 32768; m > 0; m = m / 2) {
+    for(m = 32768; m > 0; m = int(m / 2)) {
         if(a >= m && b >= m) {
             c += m
         }
@@ -21,7 +21,7 @@ function logand(a, b,    c, m) {
 }
 
 function logior(a, b,   c, m) {
-    for(m = 32768; m > 0; m = m / 2) {
+    for(m = 32768; m > 0; m = int(m / 2)) {
         if(a >= m || b >= m) {
             c += m
         }
@@ -29,6 +29,17 @@ function logior(a, b,   c, m) {
         b = b % m
     }
     return c
+}
+
+function lognot(a,  b, m) {
+    for(m = 32768; m > 0; m = int(m / 2)) {
+        if(a >= m) {
+            a -= m
+        } else {
+            b += m
+        }
+    }
+    return b
 }
 
 function test_bit(a, n) {

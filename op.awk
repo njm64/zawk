@@ -188,9 +188,8 @@ function op_dispatch_1op(   r, t) {
         t = var_get(A0)
         var_set(r, t)
     } else if(op_code == 15) {
-        r = fetch_u8()
-        printf("TODO: not\n")
-        var_set(r, A0)
+        # not
+        var_set(fetch_u8(), lognot(A0))
     } else {
         op_unknown()
     }
@@ -218,10 +217,10 @@ function op_dispatch_2op(   t) {
         cpu_branch(t > to_s16(A1))
     } else if(op_code == 6) {
         # jin
-        cpu_branch(obj_parent(arg[0]) == arg[1])
+        cpu_branch(obj_parent(A0) == A1)
     } else if(op_code == 7) {
         # test
-        printf("TODO: test\n")
+        cpu_branch(logand(A0, A1) == A1)
     } else if(op_code == 8) {
         # or
         var_set(fetch_u8(), logior(A0, A1))
@@ -239,7 +238,7 @@ function op_dispatch_2op(   t) {
         obj_clear_attr(A0, A1)
     } else if(op_code == 13) {
         # store
-        if(arg[0] == 0) {
+        if(A0 == 0) {
             stack_pop() # 6.3.4
         }
         var_set(A0, A1)
