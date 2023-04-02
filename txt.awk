@@ -9,7 +9,7 @@ function abbrev_addr (table_index, i) {
     return mem_read_u16(hdr_abbrev_table_offset + table_index * 64 + i * 2) * 2
 }
 
-function txt_print (addr,    cs, w, i, abbrev, esc) {
+function txt_print (addr,    cs, w, i, abbrev, esc, esc_code) {
     cs = cs0
     abbrev = -1
     esc = -1
@@ -43,7 +43,7 @@ function txt_print (addr,    cs, w, i, abbrev, esc) {
         } else if(esc == 1) {
             # Second part of an escape code
             esc_code += c
-            printf("<ESC%02X>", esc_code)
+            printf("%c", chr[esc_code])
             esc = -1
         } else if(abbrev >= 0) {
             # Abbreviation
