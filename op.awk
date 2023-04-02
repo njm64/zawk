@@ -344,11 +344,11 @@ function op_call(   ret_var, routine, num_locals, i, local) {
         num_locals = fetch_u8()
         for(i = 0; i < num_locals; i++) {
             local = fetch_u16()
-            if(i == 1 && A1 >= 0) {
+            if(i == 0 && A1 >= 0) {
                 stack_push(A1)
-            } else if(i == 2 && A2 >= 0) {
+            } else if(i == 1 && A2 >= 0) {
                 stack_push(A2)
-            } else if(i == 3 && A3 >= 0) {
+            } else if(i == 2 && A3 >= 0) {
                 stack_push(A3)
             } else {
                 stack_push(local)
