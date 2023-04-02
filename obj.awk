@@ -52,6 +52,9 @@ function obj_first_prop(obj) {
 function obj_next_prop(obj, prop) {
 }
 
+function obj_prop_addr(obj, prop) {
+}
+
 function obj_prop_len(prop_addr) {
 }
 

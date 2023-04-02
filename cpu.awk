@@ -51,4 +51,31 @@ function cpu_branch(condition,    b, offset) {
     }
 }
 
+function cpu_call(routine, a1, a2, a3,   r, i, n, local) {
+    r = fetch_u8()
+
+    if(routine == 0) {
+        var_set(ret_var, 0)
+        return
+    }
+
+    stack_push(r)
+    stack_push(cpu_pc)
+    stack_push_frame()
+    cpu_pc = routine * 2
+    n = fetch_u8()
+
+    for(i = 0; i < n; i++) {
+        local = fetch_u16()
+        if(i == 0 && a1 >= 0) {
+            stack_push(a1)
+        } else if(i == 1 && a2 >= 0) {
+            stack_push(a2)
+        } else if(i == 2 && a3 >= 0) {
+            stack_push(a3)
+        } else {
+            stack_push(local)
+        }
+    }
+}
 

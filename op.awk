@@ -59,7 +59,7 @@ function op_decode_arg(type) {
 }
 
 function op_dispatch() {
-    op_print()
+    #op_print()
     if(op_type == "0OP") {
         op_dispatch_0op()
     } else if(op_type == "1OP") {
@@ -296,7 +296,7 @@ function op_dispatch_2op(   t) {
 function op_dispatch_var(    t) {
     if(op_code == 0) {
         # call
-        op_call()
+        cpu_call(A0, A1, A2, A3)
     } else if(op_code == 1) {
         # storew
         mem_write_u16(A0 + 2 * A1, A2)
@@ -305,7 +305,7 @@ function op_dispatch_var(    t) {
         mem_write_u8(A0 + A1, A2)
     } else if(op_code == 3) {
         # put_prop
-        obj_put_prop(A0, A1, A2)
+        obj_set_prop(A0, A1, A2)
     } else if(op_code == 4) {
         # read
         printf("TODO: read")
@@ -330,32 +330,6 @@ function op_dispatch_var(    t) {
         var_set(A0, t)
     } else {
         op_unknown()
-    }
-}
-
-function op_call(   ret_var, routine, num_locals, i, local) {
-    ret_var = fetch_u8()
-    routine = A0
-    if(routine == 0) {
-        var_set(ret_var, 0)
-    } else {
-        stack_push(ret_var)
-        stack_push(cpu_pc)
-        stack_push_frame()
-        cpu_pc = routine * 2
-        num_locals = fetch_u8()
-        for(i = 0; i < num_locals; i++) {
-            local = fetch_u16()
-            if(i == 0 && A1 >= 0) {
-                stack_push(A1)
-            } else if(i == 1 && A2 >= 0) {
-                stack_push(A2)
-            } else if(i == 2 && A3 >= 0) {
-                stack_push(A3)
-            } else {
-                stack_push(local)
-            }
-        }
     }
 }
 
