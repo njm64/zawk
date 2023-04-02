@@ -167,7 +167,9 @@ function op_dispatch_1op(   r, t) {
         obj_remove(A0)
     } else if(op_code == 10) {
         # print_obj
-        printf("TODO: print_obj\n")
+        printf("<OBJ>")
+        txt_print(obj_name_addr(A0))
+        printf("</OBJ>")
     } else if(op_code == 11) {
         # ret
         cpu_ret(A0)
@@ -231,10 +233,10 @@ function op_dispatch_2op(   t) {
         cpu_branch(obj_attr(A0, A1))
     } else if(op_code == 11) {
         # set_attr
-        obj_set_attr(A0, A1, 1)
+        obj_set_attr(A0, A1)
     } else if(op_code == 12) {
         # clear_attr
-        obj_clear_attr(A0, A1, 0)
+        obj_clear_attr(A0, A1)
     } else if(op_code == 13) {
         # store
         if(arg[0] == 0) {
@@ -309,6 +311,7 @@ function op_dispatch_var(    t) {
     } else if(op_code == 4) {
         # read
         printf("TODO: read")
+        cpu_break = 1
     } else if(op_code == 5) {
         # print_char
         printf("%c", A0)
