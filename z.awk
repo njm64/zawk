@@ -1,8 +1,8 @@
 
 
 END {
+    txt_init()
     hdr_init()
-    hdr_print()
     cpu_init()
     stack_init()
 

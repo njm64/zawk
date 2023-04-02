@@ -103,7 +103,7 @@ function op_dispatch_0op() {
         cpu_ret(0)
     } else if(op_code == 2) {
         # print
-        printf("TODO: print\n")
+        cpu_pc = txt_print(cpu_pc)
     } else if(op_code == 3) {
         # print-ret
         printf("TODO: print-ret\n")
@@ -130,6 +130,7 @@ function op_dispatch_0op() {
 function op_dispatch_1op(   r, t) {
     if(op_code == 0) {
         # jz
+        cpu_branch(A0 == 0)
     } else if(op_code == 1) {
         # get_sibling
         r = fetch_u8()
@@ -204,15 +205,15 @@ function op_dispatch_2op(   t) {
         # jg
         cpu_branch(to_s16(A0) > to_s16(A1))
     } else if(op_code == 4) {
-        # dec-chk
+        # dec_chk
         t = var_get_signed(A0) - 1
         var_set(A0, t)
-        cpu_branch(val < to_s16(A1))
+        cpu_branch(t < to_s16(A1))
     } else if(op_code == 5) {
-        # inc-chk
+        # inc_chk
         t = var_get_signed(A0) + 1
         var_set(A0, t)
-        cpu_branch(val < to_s16(A1))
+        cpu_branch(t > to_s16(A1))
     } else if(op_code == 6) {
         # jin
         cpu_branch(obj_parent(arg[0]) == arg[1])

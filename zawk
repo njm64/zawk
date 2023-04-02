@@ -7,6 +7,7 @@ awk \
     -f stack.awk \
     -f var.awk \
     -f cpu.awk \
+    -f txt.awk \
     -f obj.awk \
     -f op.awk \
     -f z.awk \
