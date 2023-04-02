@@ -40,7 +40,7 @@ function op_decode(    b, t) {
     } else {
         # Short instruction (0OP or 1OP)
         op_code = b % 16 
-        A0 = op_decode_arg((b / 16) % 4)
+        A0 = op_decode_arg(int(b / 16) % 4)
         op_type = A0 < 0 ? "0OP" : "1OP"
     }
 }
@@ -53,7 +53,8 @@ function op_decode_arg(type) {
     } else if(type == 2) {
         return var_get(fetch_u8());
     } else {
-        return 0;
+        # Return -1 to indicate this arg is unpopulated
+        return -1;
     }
 }
 
@@ -94,31 +95,31 @@ function op_print() {
 }
 
 function op_dispatch_0op() {
-    if(op == 0) {
+    if(op_code == 0) {
         # true
         cpu_ret(1)
-    } else if(op == 1) {
+    } else if(op_code == 1) {
         # false
         cpu_ret(0)
-    } else if(op == 2) {
+    } else if(op_code == 2) {
         # print
         printf("TODO: print\n")
-    } else if(op == 3) {
+    } else if(op_code == 3) {
         # print-ret
         printf("TODO: print-ret\n")
-    } else if(op == 8) {
+    } else if(op_code == 8) {
         # ret-popped
         cpu_ret(stack_pop())
-    } else if(op == 9) {
+    } else if(op_code == 9) {
         # pop
         stack_pop()
-    } else if(op == 10) {
+    } else if(op_code == 10) {
         # quit
         cpu_break = 1
-    } else if(op == 11) {
+    } else if(op_code == 11) {
         # new-line
         printf("\n")
-    } else if(op == 13) {
+    } else if(op_code == 13) {
         # verify
         cpu_branch(1)
     } else {
@@ -220,10 +221,10 @@ function op_dispatch_2op(   t) {
         printf("TODO: test\n")
     } else if(op_code == 8) {
         # or
-        var_set(fetch_u8(), logand(A0, A1))
+        var_set(fetch_u8(), logior(A0, A1))
     } else if(op_code == 9) {
         # and
-        var_set(fetch_u8(), logior(A0, A1))
+        var_set(fetch_u8(), logand(A0, A1))
     } else if(op_code == 10) {
         # test_attr
         cpu_branch(obj_attr(A0, A1))
