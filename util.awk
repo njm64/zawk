@@ -18,6 +18,17 @@ function logand(a, b,    c, m) {
     return c
 }
 
+function logior(a, b,   c, m) {
+    for(m = 32768; m > 0; m = m / 2) {
+        if(a >= m || b >= m) {
+            c += m
+        }
+        a = a % m
+        b = b % m
+    }
+    return c
+}
+
 function test_bit(a, n) {
     return int(a / (2 ^ n)) % 2
 }

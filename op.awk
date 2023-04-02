@@ -199,18 +199,99 @@ function op_dispatch_1op(   r, t) {
     }
 }
 
-function op_dispatch_2op() {
+function op_dispatch_2op(   t) {
     if(op_code == 1) {
+        # je
         op_je()
-    } else if(op_code == 20) { # add
+    } else if(op_code == 2) {
+        # jl
+        cpu_branch(to_s16(op_arg[0]) < to_s16(op_arg[1]))
+    } else if(op_code == 3) {
+        # jg
+        cpu_branch(to_s16(op_arg[0]) > to_s16(op_arg[1]))
+    } else if(op_code == 4) {
+        # dec-chk
+        t = cpu_get_signed_var(op_arg[0]) - 1
+        cpu_set_var(op_arg[0], t)
+        cpu_branch(val < to_s16(op_arg[1]))
+    } else if(op_code == 5) {
+        # inc-chk
+        t = cpu_get_signed_var(op_arg[0]) + 1
+        cpu_set_var(op_arg[0], t)
+        cpu_branch(val < to_s16(op_arg[1]))
+    } else if(op_code == 6) {
+        # jin
+        cpu_branch(obj_parent(arg[0]) == arg[1])
+    } else if(op_code == 7) {
+        # test
+        printf("TODO: test\n")
+    } else if(op_code == 8) {
+        # or
+        cpu_set_var(cpu_fetch_u8(), logand(op_arg[0], op_arg[1]))
+    } else if(op_code == 9) {
+        # and
+        cpu_set_var(cpu_fetch_u8(), logior(op_arg[0], op_arg[1]))
+    } else if(op_code == 10) {
+        # test_attr
+        cpu_branch(obj_attr(op_arg[0], op_arg[1]))
+    } else if(op_code == 11) {
+        # set_attr
+        obj_set_attr(op_arg[0], op_arg[1], 1)
+    } else if(op_code == 12) {
+        # clear_attr
+        obj_clear_attr(op_arg[0], op_arg[1], 0)
+    } else if(op_code == 13) {
+        # store
+        if(arg[0] == 0) {
+            cpu_stack_pop() # 6.3.4
+        }
+        cpu_set_var(op_arg[0], op_arg[1])
+    } else if(op_code == 14) {
+        # insert_obj
+        obj_insert(op_arg[0], op_arg[1])
+    } else if(op_code == 15) {
+        # loadw
+        r = cpu_fetch_u8()
+        t = mem_read_u16(op_arg[0] + 2 * op_arg[1])
+        cpu_set_var(r, t)
+    } else if(op_code == 16) {
+        # loadb
+        r = cpu_fetch_u8()
+        t = mem_read_u8(op_arg[0] + op_arg[1])
+        cpu_set_var(r, t)
+    } else if(op_code == 17) {
+        # get_prop
+        r = cpu_fetch_u8()
+        t = obj_prop(op_arg[0], op_arg[1])
+        cpu_set_var(r, t)
+    } else if(op_code == 18) {
+        # get_prop_addr
+        r = cpu_fetch_u8()
+        t = obj_prop_addr(op_arg[0], op_arg[1])
+        cpu_set_var(r, t)
+    } else if(op_code == 19) {
+        # get_next_prop
+        r = cpu_fetch_u8()
+        if(op_arg[1] == 0) {
+            t = obj_first_prop(op_arg[0])
+        } else {
+            t = obj_next_prop(op_arg[0], op_arg[1])
+        }
+        cpu_set_var(r, t)
+    } else if(op_code == 20) { 
+        # add
         cpu_set_var(cpu_fetch_u8(), op_arg[0] + op_arg[1])
-    } else if(op_code == 21) { # sub
+    } else if(op_code == 21) { 
+        # sub
         cpu_set_var(cpu_fetch_u8(), op_arg[0] - op_arg[1])
-    } else if(op_code == 22) { # mul
+    } else if(op_code == 22) { 
+        # mul
         cpu_set_var(cpu_fetch_u8(), op_arg[0] * op_arg[1])
-    } else if(op_code == 23) { # div
+    } else if(op_code == 23) { 
+        # div
         cpu_set_var(cpu_fetch_u8(), int(op_arg[0] / op_arg[1]))
-    } else if(op_code == 24) { # mod
+    } else if(op_code == 24) { 
+        # mod
         cpu_set_var(cpu_fetch_u8(), int(op_arg[0] % op_arg[1]))
     } else {
         op_unknown()

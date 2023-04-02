@@ -5,6 +5,7 @@ awk \
     -f mem.awk \
     -f hdr.awk \
     -f cpu.awk \
+    -f obj.awk \
     -f op.awk \
     -f z.awk \
     $*
