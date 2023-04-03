@@ -73,7 +73,7 @@ function obj_prev_sibling(obj,  p, prev) {
 }
 
 function obj_name_addr(obj) {
-    return mem_read_u16(obj_address(obj) + 8)
+    return mem_read_u16(obj_address(obj) + 7) + 1
 }
 
 function obj_name_byte_len(obj) {
@@ -84,32 +84,73 @@ function obj_properties_addr(obj) {
     return obj_name_addr(obj) + obj_name_byte_len(obj)
 }
 
-function obj_property_list(obj) {
-    printf("TODO: obj_property_list\n")
-}
-
 function obj_first_prop(obj) {
-    printf("TODO: obj_first_prop\n")
+    return mem_read_u8(obj_properties_addr(obj) % 32)
 }
 
-function obj_next_prop(obj, prop) {
-    printf("TODO: obj_next_prop\n")
+function obj_next_prop(obj, prop,   addr, len) {
+    addr = obj_prop_addr(obj, prop)
+    len = obj_prop_len(prop_addr)
+    return mem_read_u16(addr + len) % 32
 }
 
-function obj_prop_addr(obj, prop) {
-    printf("TODO: obj_prop_addr\n")
+function obj_prop_addr(obj, prop,   addr, p, size) {
+    addr = obj_properties_addr(obj)
+    while(1) {
+        b = mem_read_u8(addr)
+        p = b % 32
+        size = int(b / 32)
+        if(p == 0) {
+            return 0
+        }
+        if(p == prop) {
+            return addr + 1
+        }
+        addr += size + 1
+    }
 }
 
 function obj_prop_len(prop_addr) {
-    printf("TODO: obj_prop_len\n")
+    if(prop_addr == 0) {
+        return 0
+    }
+
+    return int(mem_read_u8(prop_addr - 1) / 32 + 1)
 }
 
-function obj_prop(obj, prop) {
-    printf("TODO: obj_prop\n")
+function obj_prop(obj, prop,    addr, len) {
+    addr = obj_prop_addr(prop)
+    if(addr == 0) {
+        printf("Invalid property %d for object %d\n", prop, obj)
+        return 0
+    }
+
+    len = obj_prop_len(prop)
+    if(len == 1) {
+        return mem_read_u8(addr + 1)
+    } else if (size == 2) {
+        return mem_read_u16(addr + 1)
+    } else {
+        printf("Invalid property len %d\n", len)
+        return 0
+    }
 }
 
 function obj_set_prop(obj, prop, val) {
-    printf("TODO: obj_set_prop\n")
+    addr = obj_prop_addr(prop)
+    if(addr == 0) {
+        printf("Invalid property %d for object %d\n", prop, obj)
+        return 0
+    }
+
+    len = obj_prop_len(prop)
+    if(len == 1) {
+        mem_write_u8(addr + 1, val)
+    } else if(len == 2) {
+        mem_write_u16(addr + 1, val)
+    } else {
+        printf("Invalid property len %d\n", len)
+    }
 }
 
 function obj_remove(obj) {
