@@ -1,12 +1,16 @@
 
-function var_get(i) {
+function var_get(i,    val) {
     if(i == 0) {
-        return stack_pop()
+        val = stack_pop()
     } else if (i < 16) {
-        return stack[stack_frame + i - 1]
+        val = stack[stack_frame + i - 1]
     } else if (i < 256) {
-        return mem_read_u16(hdr_global_table_offset + (i - 16) * 2)
+        val = mem_read_u16(hdr_global_table_offset + (i - 16) * 2)
     } 
+    if(debug) {
+        printf("Read var %d: %d\n", i, val)
+    }
+    return val
 }
 
 function var_get_signed(i) {
@@ -14,6 +18,9 @@ function var_get_signed(i) {
 }
 
 function var_set(i, val) {
+    if(debug) {
+        printf("Setting var %d to %d\n", i, val)
+    }
     val = to_u16(val)
     if(i == 0) {
         stack_push(val)

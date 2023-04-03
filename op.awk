@@ -59,7 +59,9 @@ function op_decode_arg(type) {
 }
 
 function op_dispatch() {
-    #op_print()
+    if(debug) {
+        op_print()
+    }
     if(op_type == "0OP") {
         op_dispatch_0op()
     } else if(op_type == "1OP") {
@@ -106,7 +108,8 @@ function op_dispatch_0op() {
         cpu_pc = txt_print(cpu_pc)
     } else if(op_code == 3) {
         # print-ret
-        printf("TODO: print-ret\n")
+        cpu_pc = txt_print(cpu_pc)
+        printf("\n")
     } else if(op_code == 8) {
         # ret-popped
         cpu_ret(stack_pop())
@@ -135,13 +138,13 @@ function op_dispatch_1op(   r, t) {
         # get_sibling
         r = fetch_u8()
         t = obj_sibling(A0)
-        cpu_branch(t >= 0)
+        cpu_branch(t > 0)
         var_set(r, t)
     } else if(op_code == 2) {
         # get_child
         r = fetch_u8()
         t = obj_child(A0)
-        cpu_branch(t >= 0)
+        cpu_branch(t > 0)
         var_set(r, t)
     } else if(op_code == 3) {
         # get_parent
@@ -161,15 +164,13 @@ function op_dispatch_1op(   r, t) {
         var_set(A0, var_get_signed(A0) - 1)
     } else if(op_code == 7) {
         # print_addr
-        printf("TODO: print_addr\n")
+        txt_print(A0)
     } else if(op_code == 9) {
         # remove_obj
         obj_remove(A0)
     } else if(op_code == 10) {
         # print_obj
-        printf("<OBJ>")
         txt_print(obj_name_addr(A0))
-        printf("</OBJ>")
     } else if(op_code == 11) {
         # ret
         cpu_ret(A0)
@@ -178,7 +179,7 @@ function op_dispatch_1op(   r, t) {
         cpu_pc += (to_s16(A0) - 2)
     } else if(op_code == 13) {
         # print_paddr
-        printf("TODO: print_paddr\n")
+        txt_print(A0 * 2)
     } else if(op_code == 14) {
         # load
         r = fetch_u8()
@@ -285,10 +286,10 @@ function op_dispatch_2op(   t) {
         var_set(fetch_u8(), A0 * A1)
     } else if(op_code == 23) { 
         # div
-        var_set(fetch_u8(), int(A0 / A1))
+        var_set(fetch_u8(), int(to_s16(A0) / to_s16(A1)))
     } else if(op_code == 24) { 
         # mod
-        var_set(fetch_u8(), int(A0 % A1))
+        var_set(fetch_u8(), int(to_s16(A0) % to_s16(A1)))
     } else {
         op_unknown()
     }

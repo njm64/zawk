@@ -1,6 +1,7 @@
 
 
 END {
+#    debug = 1
     txt_init()
     hdr_init()
     cpu_init()
