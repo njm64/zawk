@@ -154,7 +154,7 @@ function op_dispatch_1op(   r, t) {
     } else if(op_code == 4) {
         # get_prop_len
         r = fetch_u8()
-        t = obj_prop_len(A0)
+        t = obj_addr_prop_len(A0)
         var_set(r, t)
     } else if(op_code == 5) {
         # inc
