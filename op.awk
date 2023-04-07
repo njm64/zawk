@@ -320,7 +320,9 @@ function op_dispatch_var(    t) {
         printf("%d", to_s16(A0))
     } else if(op_code == 7) {
         # random
-        printf("TODO: random")
+        r = fetch_u8()
+        t = A0 > 0 ? rnd_next(A0) : rnd_set_seed(-A0)
+        var_set(r, t)
     } else if(op_code == 8) {
         # push
         stack_push(A0)
