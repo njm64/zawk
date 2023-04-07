@@ -54,14 +54,6 @@ function to_u16(val) {
     return val < 0 ? val + 65536 : val % 65536
 }
 
-function test_input() {
-    FS=" "
-    RS="\n"
-    printf("getline")
-    getline < "/dev/tty"
-    printf("getline done: %d fields", NF)
-}
-
 BEGIN { 
     ord_init() 
 }

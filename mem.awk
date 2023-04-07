@@ -17,12 +17,6 @@ function mem_load_chunk(    i) {
     mem[mem_size++] = 0 
 }
 
-function mem_dump(    i) {
-    for(i = 0; i < mem_size; i++) {
-        printf("%02X\n", mem[i])
-    }
-}
-
 function mem_read_u8(addr) {
     return mem[addr]
 }
@@ -38,6 +32,13 @@ function mem_read_u16(addr) {
 function mem_write_u16(addr, val) {
     mem[addr] = int(val / 256)
     mem[addr+1] = val % 256
+}
+
+function mem_write_string(addr, s,    i) {
+    for(i = 0; i < length(s); i++) {
+        mem_write_u8(addr + i + 1, ord[substr(s, i + 1, 1)])
+    }
+    mem_write_u8(addr + length(s) + 1, 0)
 }
 
 BEGIN { mem_init() }

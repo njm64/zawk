@@ -110,6 +110,7 @@ function op_dispatch_0op() {
         # print-ret
         cpu_pc = txt_print(cpu_pc)
         printf("\n")
+        cpu_ret(1)
     } else if(op_code == 8) {
         # ret-popped
         cpu_ret(stack_pop())
@@ -310,8 +311,7 @@ function op_dispatch_var(    t) {
         obj_set_prop(A0, A1, A2)
     } else if(op_code == 4) {
         # read
-        printf("TODO: read")
-        cpu_break = 1
+        tok_read(A0, A1)
     } else if(op_code == 5) {
         # print_char
         printf("%c", A0)

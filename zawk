@@ -8,6 +8,7 @@ awk \
     -f var.awk \
     -f cpu.awk \
     -f txt.awk \
+    -f tok.awk \
     -f obj.awk \
     -f op.awk \
     -f z.awk \
