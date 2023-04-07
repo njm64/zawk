@@ -321,7 +321,7 @@ function op_dispatch_var(    t) {
     } else if(op_code == 7) {
         # random
         r = fetch_u8()
-        t = A0 > 0 ? rnd_next(A0) : rnd_set_seed(-A0)
+        t = A0 > 0 ? rnd_get(A0) : rnd_set_seed(-A0)
         var_set(r, t)
     } else if(op_code == 8) {
         # push

@@ -4,7 +4,7 @@ function rnd_set_seed(n) {
     rnd_next = 0
 }
     
-function rnd_next(n,  r) {
+function rnd_get(n,  r) {
     if(rnd_seed) {
         # Predictable
         return 1 + ((rnd_next++ % rnd_seed) % n)
