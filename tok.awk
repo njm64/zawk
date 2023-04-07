@@ -49,7 +49,9 @@ function tok_split(s,   i, c, prev, prev_split) {
 
 function tok_read_line() {
     FS=RS="\n"
-    getline < "/dev/tty"
+    if(!getline < "/dev/tty") {
+        cpu_break = 1
+    }
     return $0
 }
 
