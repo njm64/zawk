@@ -1,24 +1,17 @@
 #!/bin/sh
 
-# Need to set the locale to C if reading in binary mode
-#export LC_ALL=C
+SRC="util mem hdr stack var cpu txt tok obj rnd op z"
 
-# Enable interactive mode for mawk
-case `awk -Wversion 2> /dev/null` in mawk*)
-	OPTIONS=-Winteractive
+for s in $SRC; do
+    OPTIONS="$OPTIONS -f $s.awk"
+done
+
+case `awk -Wversion 2> /dev/null` in 
+    mawk*)
+        # For mawk, enable interactive mode, and pipe the z3 through od
+        od -v -t u1 $1 | awk -Winteractive -f load_asc.awk $OPTIONS;;
+    *)
+        # For other versions of awk, we can load the binary z3 directly.
+        LC_ALL=C awk -f load_bin.awk $OPTIONS $1;;
 esac
 
-od -v -t u1 $1 | awk $OPTIONS \
-    -f load_asc.awk \
-    -f util.awk \
-    -f mem.awk \
-    -f hdr.awk \
-    -f stack.awk \
-    -f var.awk \
-    -f cpu.awk \
-    -f txt.awk \
-    -f tok.awk \
-    -f obj.awk \
-    -f rnd.awk \
-    -f op.awk \
-    -f z.awk \
