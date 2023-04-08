@@ -3,7 +3,12 @@
 # Need to set the locale to C if reading in binary mode
 #export LC_ALL=C
 
-od -v -t u1 $1 | awk \
+# Enable interactive mode for mawk
+case `awk -Wversion 2> /dev/null` in mawk*)
+	OPTIONS=-Winteractive
+esac
+
+od -v -t u1 $1 | awk $OPTIONS \
     -f load_asc.awk \
     -f util.awk \
     -f mem.awk \
