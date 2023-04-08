@@ -1,6 +1,10 @@
 #!/bin/sh
-export LC_ALL=C
-awk \
+
+# Need to set the locale to C if reading in binary mode
+#export LC_ALL=C
+
+od -v -t u1 $1 | awk \
+    -f load_asc.awk \
     -f util.awk \
     -f mem.awk \
     -f hdr.awk \
@@ -13,4 +17,3 @@ awk \
     -f rnd.awk \
     -f op.awk \
     -f z.awk \
-    $*
