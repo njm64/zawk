@@ -21,9 +21,7 @@ function hdr_print() {
 }
 
 function restart_game() {
-    for(i = 1; i <= 65536; i++) {
-        mem[i] = mem_rest[i]
-    }
+    mem_restore()
     cpu_init()
     stack_init()
 }

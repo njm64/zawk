@@ -21,9 +21,6 @@ function load_chunk(    i) {
         mem[mem_size++] = ord[$i]
     }
     mem[mem_size++] = 0 
-    for(i = 1; i <= 65536; i++) {
-        mem_rest[i] = mem[i]
-    }
 }
 
 { load_chunk() }
