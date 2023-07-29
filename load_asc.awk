@@ -6,4 +6,7 @@
     for(i = 2; i <= NF; i++) {
         mem[mem_size++] = $i+0
     }
+    for(i = 1; i <= 65536; i++) {
+        mem_rest[i] = mem[i]
+    }
 }

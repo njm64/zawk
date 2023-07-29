@@ -19,3 +19,9 @@ function hdr_print() {
     printf("Static memory offset: %04X\n", hdr_static_memory_offset)
     printf("Abbrev table offset:  %04X\n", hdr_abbrev_table_offset)
 }
+
+function restart_game() {
+    for(i = 1; i <= 65536; i++) {
+        mem[i] = mem_rest[i]
+    }
+}
