@@ -114,7 +114,6 @@ function op_dispatch_0op() {
     } else if(op_code == 7) {
         # restart
         restart_game()
-        cpu_ret(1)
     } else if(op_code == 8) {
         # ret-popped
         cpu_ret(stack_pop())
