@@ -3,7 +3,7 @@ function hdr_init() {
 # Fix header flags:
 # reset bit 4 (status line available)
 # reset bit 5 (split screen available)
-    hdr_flags = and(mem_read_u8(1),207)
+    hdr_flags = logand(mem_read_u8(1),207)
     mem_write_u8(1, hdr_flags)
     hdr_high_memory_offset = mem_read_u16(4)
     hdr_initial_pc = mem_read_u16(6)
