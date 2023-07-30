@@ -1,23 +1,28 @@
 
 
-END {
-#    debug = 1
+function z_main() {
     mem_init()
-    txt_init()
     hdr_init()
+
+    if(hdr_version != 3) {
+        printf ("ZAWK Z-Machine/Infocom Interactive fiction interpreter\n")
+        printf ("Unsupported z-machine file version %d.\n", hdr_version)
+        return
+    }
+
+    txt_init()
     tok_init()
     cpu_init()
     stack_init()
 
-    if (hdr_version == 3) {
-        while(!cpu_break) {
-            op_decode()
-            op_dispatch()
-        }
-    } else {
-        printf ("ZAWK Z-Machine/Infocom Interactive fiction interpreter\n")
-        printf ("Unsupported z-machine file version %d.\n",mem[0])
+    while(!cpu_break) {
+        op_decode()
+        op_dispatch()
     }
+}
 
+END {
+#    debug = 1
+    z_main()
 }
 
