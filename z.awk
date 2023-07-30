@@ -8,7 +8,7 @@ END {
     cpu_init()
     stack_init()
 
-    if (mem[0] == 3) {
+    if (hdr_version == 3) {
         while(!cpu_break) {
             op_decode()
             op_dispatch()
