@@ -6,6 +6,15 @@ for s in $SRC; do
     OPTIONS="$OPTIONS -f $s.awk"
 done
 
+if [ "$1" = '' ]
+then
+    echo "ZAWK Z-Machine/Infocom Interactive fiction interpreter"
+    echo "by Nick Maher and Shawn Sijnstra (c) 2023\n"
+    echo "Usage:"
+    echo "   zawk <gamefile>"
+    echo "where gamefile is a z3 z-machine/infocom game data file."
+    echo "For more information go to https://github.com/njm64/zawk"
+else
 case `awk -Wversion 2> /dev/null` in 
     mawk*)
         # For mawk, enable interactive mode, and pipe the z3 through od
@@ -14,4 +23,4 @@ case `awk -Wversion 2> /dev/null` in
         # For other versions of awk, we can load the binary z3 directly.
         LC_ALL=C awk -f load_bin.awk $OPTIONS $1;;
 esac
-
+fi

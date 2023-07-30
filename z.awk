@@ -9,11 +9,15 @@ END {
     cpu_init()
     stack_init()
 
-    while(!cpu_break) {
-        op_decode()
-        op_dispatch()
+    if (hdr_version == 3) {
+        while(!cpu_break) {
+            op_decode()
+            op_dispatch()
+        }
+    } else {
+        printf ("ZAWK Z-Machine/Infocom Interactive fiction interpreter\n")
+        printf ("Unsupported z-machine file version %d.\n",mem[0])
     }
-
 
 }
 
