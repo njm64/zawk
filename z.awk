@@ -1,8 +1,9 @@
 
 
 function z_main() {
-    mem_init()
+
     hdr_init()
+    mem_init()
 
     if(hdr_version != 3) {
         printf ("ZAWK Z-Machine/Infocom Interactive fiction interpreter\n")
