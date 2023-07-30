@@ -301,7 +301,7 @@ function op_dispatch_2op(   t) {
     }
 }
 
-function op_dispatch_var(    t) {
+function op_dispatch_var(    t, n) {
     if(op_code == 0) {
         # call
         cpu_call(A0, A1, A2, A3)
@@ -326,7 +326,8 @@ function op_dispatch_var(    t) {
     } else if(op_code == 7) {
         # random
         r = fetch_u8()
-        t = A0 > 0 ? rnd_get(A0) : rnd_set_seed(-A0)
+        n = to_s16(A0)
+        t = n > 0 ? rnd_get(n) : rnd_set_seed(-n)
         var_set(r, t)
     } else if(op_code == 8) {
         # push
