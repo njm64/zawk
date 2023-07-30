@@ -2,6 +2,7 @@
 
 END {
 #    debug = 1
+    mem_init()
     txt_init()
     hdr_init()
     tok_init()
