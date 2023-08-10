@@ -113,6 +113,12 @@ function op_dispatch_0op() {
         cpu_ret(1)
     } else if(op_code == 4) {
         # nop
+    } else if(op_code == 5) {
+        # save
+        cpu_branch(save_game())
+    } else if(op_code == 6) {
+        # restore
+        cpu_branch(restore_game())
     } else if(op_code == 7) {
         # restart
         restart_game()

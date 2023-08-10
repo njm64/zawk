@@ -1,8 +1,8 @@
 function hdr_init() {
     hdr_version = mem_read_u8(0)
 # Fix header flags:
-# reset bit 4 (status line available)
-# reset bit 5 (split screen available)
+# reset bit 4 (status line is not available)
+# reset bit 5 (split screen is not available)
     hdr_flags = logand(mem_read_u8(1),207)
     mem_write_u8(1, hdr_flags)
     hdr_high_memory_offset = mem_read_u16(4)
@@ -29,4 +29,13 @@ function restart_game() {
     mem_restore()
     cpu_init()
     stack_init()
+}
+
+#code stubs for save and restore
+function save_game () {
+    return 0
+}
+
+function restore_game () {
+    return 0
 }
