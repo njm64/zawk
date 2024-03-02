@@ -2,7 +2,11 @@
 function txt_init() {
     cs0 = "abcdefghijklmnopqrstuvwxyz"
     cs1 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    cs2 = " \n0123456789.,!?_#'\"/\\-:()"
+    if (hdr_version == 1) {
+        cs2 = " 0123456789.,!?_#'\"/\\<-:()"
+    } else {
+        cs2 = " \n0123456789.,!?_#'\"/\\-:()"
+    }
 }
 
 function abbrev_addr (table_index, i) {
@@ -13,8 +17,9 @@ function txt_clear() {
     txt_buf = ""
 }
 
-function txt_decode(addr,    cs, w, i, abbrev, esc, esc_code) {
+function txt_decode(addr,    cs, csl, w, i, abbrev, esc, esc_code) {
     cs = cs0
+    csl = cs0
     abbrev = -1
     esc = -1
 
@@ -55,22 +60,70 @@ function txt_decode(addr,    cs, w, i, abbrev, esc, esc_code) {
             abbrev = -1
         } else if(c == 0) {
             txt_buf = txt_buf " "
-        } else if(c == 1) {
+            if (hd_version < 3) {
+                cs = csl
+            }
+        } else if(c == 1 && hdr_version > 1) {
             abbrev = 0
-        } else if(c == 2) {
+        } else if(c == 1 && hdr_version = 1) {
+            txt_buf = txt_buf "\n"
+            cs = csl
+        } else if(c == 2 && hdr_version > 2) {
             abbrev = 1
-        } else if(c == 3) {
+        } else if(c == 2 && hdr_version < 3) {
+            if (csl == cs0) {
+                cs = cs1
+            } else if (csl == cs1) {
+                cs = cs2
+            } else {
+                cs = cs0
+            }
+        } else if(c == 3 && hdr_version > 2) {
             abbrev = 2
-        } else if(c == 4) {
+        } else if(c == 3 && hdr_version < 3) {
+            if (csl == cs2) {
+                cs = cs1
+            } else if (csl == cs1) {
+                cs = cs0
+            } else {
+                cs = cs2
+            }
+        } else if(c == 4 && hdr_version > 2) {
             cs = cs1
-        } else if(c == 5) {
+        } else if(c == 4 && hdr_version < 3) {
+            if (cs == cs0) {
+                cs = cs1
+            } else if (cs == cs1) {
+                cs = cs2
+            } else {
+                cs = cs0
+            }
+            csl = cs
+        } else if(c == 5 && hdr_version > 2) {
             cs = cs2
+        } else if(c == 5 && hdr_version < 3) {
+            if (cs == cs2) {
+                cs = cs1
+            } else if (cs == cs1) {
+                cs = cs0
+            } else {
+                cs = cs2
+            }
+            csl = cs
         } else if(c == 6 && cs == cs2) {
-            cs = cs0
             esc = 0
+            if (hdr_version < 3) {
+                cs = csl
+            } else {
+                cs = cs0
+            }
         } else {
             txt_buf = txt_buf substr(cs, c - 5, 1)
-            cs = cs0
+            if (hdr_version < 3) {
+                cs = csl
+            } else {
+                cs = cs0
+            }
         }
     }
 
