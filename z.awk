@@ -5,7 +5,7 @@ function z_main() {
     hdr_init()
     mem_init()
 
-    if(hdr_version != 3) {
+    if(hdr_version < 1 || hdr_version > 3) {
         printf ("ZAWK Z-Machine/Infocom Interactive fiction interpreter\n")
         printf ("Unsupported z-machine file version %d.\n", hdr_version)
         return

@@ -1,5 +1,7 @@
 # zawk
-An Awk implementation of the Infocom Z-Machine. Supports Z3 files (e.g. Zork 1, Hitchhikers Guide to the Galaxy, etc). 
+An Awk implementation of the Infocom Z-Machine. Supports Z3 files (e.g. Zork 1, Hitchhikers Guide to the Galaxy, etc).
+
+Updated to also support Z1 and Z2 game files.
 
 Works with original Awk, GNU gawk, and mawk.
 
